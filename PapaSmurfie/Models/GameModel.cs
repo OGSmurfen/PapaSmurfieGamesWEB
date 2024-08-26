@@ -7,6 +7,7 @@
         public string GameURL { get; set; } = null!;
         public string GameDescription { get; set; } = null!;
         public string GameCompanyName { get; set; } = "PapaSmurfie";
+        public string GamePhotoURI { get; set; } = null!;
         public double GameRating { get; set; }
         public double RoundedGameRating { get { return Math.Round((GameRating * 10) / 10); } }
     }

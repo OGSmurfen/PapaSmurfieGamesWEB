@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ApplicationDbContext>(opt => 
     opt.UseSqlServer(builder.Configuration.GetConnectionString("db")));
 
@@ -30,6 +30,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
