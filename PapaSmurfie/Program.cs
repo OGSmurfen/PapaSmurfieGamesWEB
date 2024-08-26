@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using PapaSmurfie.Database;
 using Microsoft.AspNetCore.Identity;
+using PapaSmurfie.Repository.IRepository;
+using PapaSmurfie.Repository.RepositoryImpl;
+using PapaSmurfie.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
 
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddScoped<IGamesRepository, GamesRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

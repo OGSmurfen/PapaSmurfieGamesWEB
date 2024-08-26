@@ -9,6 +9,7 @@ namespace PapaSmurfie.Database
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<GameModel> Games { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

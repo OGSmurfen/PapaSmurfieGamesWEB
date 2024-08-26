@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\games\pongcatch\" />
+    <Folder Include="wwwroot\images\games\" />
   </ItemGroup>
 
 </Project>

@@ -86,6 +86,11 @@ namespace PapaSmurfie.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -137,6 +142,10 @@ namespace PapaSmurfie.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -226,17 +235,21 @@ namespace PapaSmurfie.Migrations
 
             modelBuilder.Entity("PapaSmurfie.Models.GameModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("GameId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GameId"));
 
                     b.Property<string>("GameCompanyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GameDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GameGenre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -248,6 +261,9 @@ namespace PapaSmurfie.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("GamePrice")
+                        .HasColumnType("float");
+
                     b.Property<double>("GameRating")
                         .HasColumnType("float");
 
@@ -255,9 +271,16 @@ namespace PapaSmurfie.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("GameId");
 
                     b.ToTable("Games");
+                });
+
+            modelBuilder.Entity("PapaSmurfie.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
