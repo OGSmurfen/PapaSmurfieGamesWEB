@@ -8,6 +8,8 @@ using PapaSmurfie.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
+using PapaSmurfie.DataAccess.Repository.IRepository;
+using PapaSmurfie.DataAccess.Repository.RepositoryImpl;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,7 @@ builder.Services.Configure<StaticFileOptions>(options =>
     };
 });
 
+builder.Services.AddScoped<IOwnedGamesRepository, OwnedGamesRepository>();
 builder.Services.AddScoped<IGamesRepository, GamesRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();

@@ -1,4 +1,5 @@
-﻿using PapaSmurfie.Database;
+﻿using PapaSmurfie.DataAccess.Repository.IRepository;
+using PapaSmurfie.Database;
 using PapaSmurfie.Repository.IRepository;
 
 namespace PapaSmurfie.Repository
@@ -7,14 +8,20 @@ namespace PapaSmurfie.Repository
     {
         private readonly ApplicationDbContext applicationDbContext;
         public IGamesRepository GamesRepository { get; }
+        public IOwnedGamesRepository OwnedGamesRepository { get; }
+
 
         public UnitOfWork(
             ApplicationDbContext applicationDbContext,
-            IGamesRepository gamesRepository
+            IGamesRepository gamesRepository,
+            IOwnedGamesRepository ownedGamesRepository
+
             )
         {
             this.applicationDbContext = applicationDbContext;
             this.GamesRepository = gamesRepository;
+            this.OwnedGamesRepository = ownedGamesRepository;
+
         }
 
         public async Task Save()

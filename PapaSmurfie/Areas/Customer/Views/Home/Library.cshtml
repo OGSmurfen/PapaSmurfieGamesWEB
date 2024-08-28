@@ -1,0 +1,56 @@
+﻿@model List<GameModel>
+
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if(!User.Identity.IsAuthenticated)
+{
+    <text>Login to view Library</text>
+}
+
+<div class="row pb-3">
+    @foreach (var game in Model)
+    {
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                        <img src="~/@game.GamePhotoURI" class="card-img-top rounded" />
+                        <div class="card-body pb-0">
+                            <div class="pl-1">
+                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@game.GameName</p>
+                                <p class="card-title text-warning text-center">by <b>@game.GameCompanyName</b></p>
+                            </div>
+                            <div class="pl-1">
+                                <p class="text-dark text-opacity-75 text-center mb-0">
+                                    Owned
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <a asp-controller="GameActions" asp-action="Details"
+                               asp-route-gameId="@game.GameId"
+                               class="btn btn-primary bg-gradient border-0 form-control mb-2 mt-1">
+                                Details
+                            </a>
+                           
+                            <a asp-controller="GameActions" asp-action="Play"
+                                asp-route-gameId="@game.GameId"
+                                class="btn btn-primary bg-gradient border-0 form-control">
+                                Play
+                            </a>
+                              
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

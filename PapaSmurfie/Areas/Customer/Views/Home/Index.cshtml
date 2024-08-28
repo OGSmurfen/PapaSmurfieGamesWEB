@@ -1,7 +1,16 @@
-﻿@model IEnumerable<GameModel>
+﻿@model GameVM
+
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
 <div class="row pb-3">
-    @foreach (var game in Model)
+    @foreach (var game in Model.Games)
     {
         <div class="col-lg-3 col-sm-6">
             <div class="row p-2">
@@ -38,11 +47,28 @@
                             class="btn btn-primary bg-gradient border-0 form-control mb-2 mt-1">
                                 Details
                             </a>
-                            <a asp-controller="GameActions" asp-action="Play"
-                               asp-route-gameId="@game.GameId"
-                               class="btn btn-primary bg-gradient border-0 form-control">
-                                Play
-                            </a>
+                        @{
+                                bool isOwnedByUser = Model.GamesWithOwners.Any(owned => owned.GameOwnedId == game.GameId &&
+                                            owned.UserOwnerName == User.Identity.Name);
+
+                                if (isOwnedByUser)
+                                {
+                                    <a asp-controller="GameActions" asp-action="Play"
+                                       asp-route-gameId="@game.GameId"
+                                       class="btn btn-primary bg-gradient border-0 form-control">
+                                        Play
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="GameActions" asp-action="GetGame"
+                                       asp-route-gameId="@game.GameId" asp-route-userName="@User.Identity.Name"
+                                       class="btn btn-primary bg-gradient border-0 form-control">
+                                        Get
+                                    </a>
+                                }
+                        }
+                            
                         </div>
                     </div>
                 </div>

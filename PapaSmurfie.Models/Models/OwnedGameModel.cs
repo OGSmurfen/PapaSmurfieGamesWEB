@@ -7,11 +7,7 @@ namespace PapaSmurfie.Models
     {
         [Key]
         public int RecordId { get; set; }
-        public int UserOwnerId { get; set; }
-        [ForeignKey("UserOwnerId")]
-        public ApplicationUser UserOwner { get; set; } = null!;
+        public string UserOwnerName { get; set; } = null!;
         public int GameOwnedId { get; set; }
-        [ForeignKey("GameOwnedId")]
-        public GameModel GameOwned { get; set; } = null!;
     }
 }
