@@ -269,7 +269,7 @@ namespace PapaSmurfie.Migrations
 
                     b.HasKey("GameId");
 
-                    b.ToTable("Games");
+                    b.ToTable("Games", (string)null);
                 });
 
             modelBuilder.Entity("PapaSmurfie.Models.OwnedGameModel", b =>
@@ -289,7 +289,7 @@ namespace PapaSmurfie.Migrations
 
                     b.HasKey("RecordId");
 
-                    b.ToTable("OwnedGames");
+                    b.ToTable("OwnedGames", (string)null);
                 });
 
             modelBuilder.Entity("PapaSmurfie.Models.ApplicationUser", b =>
