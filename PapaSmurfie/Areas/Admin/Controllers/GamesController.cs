@@ -41,6 +41,13 @@ namespace PapaSmurfie.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var gameWithTheSameName = await unitOfWork.GamesRepository.GetAsync(g => g.GameName == model.Game.GameName);
+                if (gameWithTheSameName != null)
+                {
+                    TempData["Message"] = "Game with such name already exists!";
+                    return View();
+                }
+                
                 if (model.UploadFileModel.GameFile != null && model.UploadFileModel.GameImage != null)
                 {
                     string wwwRootPath = webHostEnvironment.WebRootPath;
@@ -84,5 +91,19 @@ namespace PapaSmurfie.Web.Areas.Admin.Controllers
             return View();
         }
 
+
+        public IActionResult EditGame(int? gameId)
+        {
+
+
+            return View();
+        }
+        [HttpPost]
+        [RequestSizeLimit(1073741824)] // 1 GB
+        [ActionName("EditGame")]
+        public IActionResult EditGamePOST()
+        {
+            return View();
+        }
     }
 }
