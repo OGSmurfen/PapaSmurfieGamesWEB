@@ -69,6 +69,54 @@
             &copy; 2024 - PapaSmurfie - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    <button class="open-button" onclick="openForm()">Chat</button>
+
+    <div class="chat-popup" id="chatpopup">
+        <form class="form-container">
+            <h1>Chat</h1>
+
+            <label for="messageInput"><b>Message</b></label>
+            <textarea placeholder="Type message.." id="messageInput" required></textarea>
+
+            <label for="userInput"><b>Username</b></label>
+            <input type="text" id="userInput" />
+
+            <div class="row p-1">
+                <div >
+                    <ul id="messagesList"></ul>
+                </div>
+            </div>
+
+            @if(Context.User.Identity.IsAuthenticated)
+            {
+                <input type="button" id="sendButton" value="Send Message" />
+            }
+            else
+            {
+                <p>Please <a asp-area="Identity" asp-controller="Account" asp-action="Login">log in</a> to send a message.</p>
+                <input type="button" id="sendButton" value="Send Message" disabled="disabled" />
+            }
+            
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        </form>
+    </div>
+
+    <script>
+        function openForm() {
+            document.getElementById("chatpopup").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("chatpopup").style.display = "none";
+        }
+    </script>
+    <script>
+        var isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
+    </script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

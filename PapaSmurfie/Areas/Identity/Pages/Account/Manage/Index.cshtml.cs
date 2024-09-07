@@ -51,6 +51,8 @@ namespace PapaSmurfie.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
+
+            public string Username { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -98,6 +100,22 @@ namespace PapaSmurfie.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+
+            var userName = await _userManager.GetUserNameAsync(user);
+            if (Input.Username != userName)
+            {
+                var setUserNameResult = await _userManager.SetUserNameAsync(user, Input.Username);
+                if(!setUserNameResult.Succeeded)
+                {
+                    foreach(var err in setUserNameResult.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, err.Description);
+                    }
+                    await LoadAsync(user);
+                    return Page();
+                }
+            }
+
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

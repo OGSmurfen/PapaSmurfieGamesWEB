@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Authorization;
 using PapaSmurfie.DataAccess.Repository.IRepository;
 using PapaSmurfie.DataAccess.Repository.RepositoryImpl;
+using PapaSmurfie.Web.Hubs;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +46,8 @@ builder.Services.AddScoped<IGamesRepository, GamesRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,5 +70,7 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+app.MapHub<ChatHub>("/chatHub");
+
 app.UseStaticFiles();
 app.Run();
