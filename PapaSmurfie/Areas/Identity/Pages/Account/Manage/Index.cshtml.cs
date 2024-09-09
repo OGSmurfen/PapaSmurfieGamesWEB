@@ -105,15 +105,23 @@ namespace PapaSmurfie.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             if (Input.Username != userName)
             {
-                var setUserNameResult = await _userManager.SetUserNameAsync(user, Input.Username);
-                if(!setUserNameResult.Succeeded)
+                if (!_userManager.Users.Any(u => u.UserName == Input.Username))
                 {
-                    foreach(var err in setUserNameResult.Errors)
+                    var setUserNameResult = await _userManager.SetUserNameAsync(user, Input.Username);
+                    if (!setUserNameResult.Succeeded)
                     {
-                        ModelState.AddModelError(string.Empty, err.Description);
+                        foreach (var err in setUserNameResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, err.Description);
+                        }
+                        await LoadAsync(user);
+                        return Page();
                     }
-                    await LoadAsync(user);
-                    return Page();
+                }
+                else
+                {
+                    StatusMessage = "This username is taken";
+                    return RedirectToPage();
                 }
             }
 

@@ -28,6 +28,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 // RequireUniqueEmail should remain true for the login to work with both email and username properly
                 options.User.RequireUniqueEmail = true;
                 
+                
             }
         ).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
