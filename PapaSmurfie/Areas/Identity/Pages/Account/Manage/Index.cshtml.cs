@@ -51,7 +51,7 @@ namespace PapaSmurfie.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
-
+            [StringLength(20, MinimumLength = 1, ErrorMessage = "Username must be between 1 and 20 characters.")]
             public string Username { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -71,6 +71,7 @@ namespace PapaSmurfie.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                Username = userName,
                 PhoneNumber = phoneNumber
             };
         }
