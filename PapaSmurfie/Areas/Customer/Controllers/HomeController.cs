@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PapaSmurfie.Models;
 using PapaSmurfie.Models.Models.ViewModels;
 using PapaSmurfie.Repository;
+using SQLitePCL;
 using System.Diagnostics;
 
 namespace PapaSmurfie.Web.Areas.Customer.Controllers
@@ -17,9 +18,18 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? query)
         {
-            IEnumerable<GameModel> games = await unitOfWork.GamesRepository.GetAllAsync();
+            Console.WriteLine($"Query: {query}");
+            IEnumerable<GameModel> games;
+            if (!string.IsNullOrEmpty(query))
+            {
+                games = await unitOfWork.GamesRepository.GetAllAsync(g => g.GameName.Contains(query));
+            }
+            else
+            {
+                games = await unitOfWork.GamesRepository.GetAllAsync();
+            }
             IEnumerable<OwnedGameModel> gamesWithOwners = await unitOfWork.OwnedGamesRepository.GetAllAsync();
             GameVM gameVM = new GameVM
             {
@@ -51,6 +61,13 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Search(string query)
+        {
+            // Assuming `query` is a string; modify as needed
+            return RedirectToAction("Index", "Home", new { query });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
