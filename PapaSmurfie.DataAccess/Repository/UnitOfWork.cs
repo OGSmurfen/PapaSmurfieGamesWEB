@@ -10,19 +10,22 @@ namespace PapaSmurfie.Repository
         public IGamesRepository GamesRepository { get; }
         public IOwnedGamesRepository OwnedGamesRepository { get; }
         public IFriendsRepository FriendsRepository { get; }
-
+        public IUserStatusRepository UserStatusRepository { get; }
 
         public UnitOfWork(
             ApplicationDbContext applicationDbContext,
             IGamesRepository gamesRepository,
             IOwnedGamesRepository ownedGamesRepository,
-            IFriendsRepository friendsRepository
+            IFriendsRepository friendsRepository,
+            IUserStatusRepository userStatusRepository
+
             )
         {
             this.applicationDbContext = applicationDbContext;
             this.GamesRepository = gamesRepository;
             this.OwnedGamesRepository = ownedGamesRepository;
             FriendsRepository = friendsRepository;
+            UserStatusRepository = userStatusRepository;
         }
 
         public async Task Save()

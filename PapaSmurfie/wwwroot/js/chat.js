@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-console.log("Is Authenticated:", isAuthenticated);
+console.log("Chat: Is Authenticated:", isAuthenticated);
 
 if (isAuthenticated) {
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
@@ -31,5 +31,5 @@ if (isAuthenticated) {
         event.preventDefault();
     });
 } else {
-    console.log("User is not authenticated, SignalR connection will not be started.");
+    console.log("User is not authenticated, ChatHub connection will not be started.");
 }

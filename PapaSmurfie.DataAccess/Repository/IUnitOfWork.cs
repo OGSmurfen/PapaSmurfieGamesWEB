@@ -8,6 +8,7 @@ namespace PapaSmurfie.Repository
         IGamesRepository GamesRepository { get; }
         IOwnedGamesRepository OwnedGamesRepository { get; }
         IFriendsRepository FriendsRepository { get; }
+        IUserStatusRepository UserStatusRepository { get; }
         Task Save();
     }
 }

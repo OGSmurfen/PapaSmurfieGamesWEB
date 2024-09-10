@@ -53,6 +53,7 @@ builder.Services.AddScoped<IGamesRepository, GamesRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IFriendsRepository, FriendsRepository>();
+builder.Services.AddScoped<IUserStatusRepository, UserStatusRepository>(); 
 
 builder.Services.AddSignalR();
 

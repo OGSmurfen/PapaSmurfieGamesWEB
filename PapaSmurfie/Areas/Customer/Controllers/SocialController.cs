@@ -45,6 +45,7 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
                                      f.FriendshipReceiverId == myUserId) && 
                                      f.Status == SD.FriendStatus_Accepted);
 
+            // Make a list of all incoming requests to put into the ViewModel
             List<string> incomingPendingUsernames = new List<string>();
             foreach (var invite in incomingPending)
             {   
@@ -53,6 +54,7 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
                                     u => u.Id == invite.FriendshipSenderId).UserName);
             }
 
+            // Make a list of all outgoing requests to put into the ViewModel
             List<string> outgoingPendingUsernames = new List<string>();
             foreach (var invite in outgoingPending)
             {
@@ -61,28 +63,49 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
                                     u => u.Id == invite.FriendshipReceiverId).UserName);
             }
 
-            List<string> acceptedFriendsUsernames = new List<string>();
-            foreach (var friends in acceptedFriends)
+
+            //List<string> acceptedFriendsUsernames = new List<string>();
+            //foreach (var friends in acceptedFriends)
+            //{
+            //    // No matter if sent or received, we want the other user's Id
+            //    string usernameToAdd;
+            //    var senderUsername = _signInManager.UserManager.Users.FirstOrDefault(
+            //                        u => u.Id == friends.FriendshipSenderId).UserName;
+            //    usernameToAdd = senderUsername;
+            //    if(senderUsername == User.Identity.Name)
+            //    {
+            //        var receiverUsername = _signInManager.UserManager.Users.FirstOrDefault(
+            //                        u => u.Id == friends.FriendshipReceiverId).UserName;
+            //        usernameToAdd = receiverUsername;
+            //    }
+            //    acceptedFriendsUsernames.Add(usernameToAdd);
+            //}
+
+
+            var thisUserAcceptedFriendsIds = await _unitOfWork.FriendsRepository.GetThisUserFriendsIds(myUserId);
+            var usernameStatusDict = new Dictionary<string, string>();
+            foreach (var friendId in thisUserAcceptedFriendsIds)
             {
-                // No matter if sent or received, we want the other user's Id
-                string usernameToAdd;
-                var senderUsername = _signInManager.UserManager.Users.FirstOrDefault(
-                                    u => u.Id == friends.FriendshipSenderId).UserName;
-                usernameToAdd = senderUsername;
-                if(senderUsername == User.Identity.Name)
+                string username = _signInManager.UserManager.Users.FirstOrDefault(u => u.Id == friendId).UserName;
+                string status = "";
+                if(_unitOfWork.UserStatusRepository.GetAsync(u => u.UserId == friendId)
+                                                            .GetAwaiter().GetResult() != null)
                 {
-                    var receiverUsername = _signInManager.UserManager.Users.FirstOrDefault(
-                                    u => u.Id == friends.FriendshipReceiverId).UserName;
-                    usernameToAdd = receiverUsername;
+                    status = SD.OnOffStatus_Online;
                 }
-                acceptedFriendsUsernames.Add(usernameToAdd);
+                else
+                {
+                    status = SD.OnOffStatus_Offline;
+                }
+                usernameStatusDict.Add(username, status);
             }
 
-            FriendRequestsVM allMyFriendRequests = new FriendRequestsVM
+
+            SocialVM allMyFriendRequests = new SocialVM
                     {
                         OutgoingPending = outgoingPendingUsernames,
                         IncomingPending = incomingPendingUsernames,
-                        Accepted = acceptedFriendsUsernames
+                        UsernameStatusDict = usernameStatusDict
             };
 
             return View(allMyFriendRequests);

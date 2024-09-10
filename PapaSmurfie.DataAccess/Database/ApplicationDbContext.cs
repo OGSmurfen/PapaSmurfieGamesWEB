@@ -13,6 +13,7 @@ namespace PapaSmurfie.Database
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<OwnedGameModel> OwnedGames { get; set; }
         public DbSet<FriendsListModel> FriendsList { get; set; }
+        public DbSet<UserStatusModel> UserStatus { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PapaSmurfie.Models.Models
 {
-    public class OnlineOfflineModel
+    public class UserStatusModel
     {
-        public string OnOffId { get; set; } = null!;
+        [Key]
+        public int UserStatusId { get; set; }
         public string UserId { get; set; } = null!;
-        public string Status { get; set; } = null!;
     }
 }

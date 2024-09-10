@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace PapaSmurfie.Models.Models.ViewModels
 {
-    public class FriendRequestsVM
+    public class SocialVM
     {
         public List<string> OutgoingPending { get; set; } = null!;
         public List<string> IncomingPending { get; set; } = null!;
-        public List<string> Accepted { get; set; } = null!;
+        public Dictionary<string, string> UsernameStatusDict { get; set; } = null!;
+
     }
 }

@@ -1,4 +1,4 @@
-﻿@model FriendRequestsVM
+﻿@model SocialVM
 
 @if (TempData["StatusMessage"] != null)
 {
@@ -86,11 +86,14 @@ else{
         <div class="row p-2">
                 <div class="scrollable-container" >
                     
-                    @foreach (var friend in Model.Accepted)
+                    @foreach (var friend in Model.UsernameStatusDict)
                     {
                         <div class="row mb-2">
                             <div class="col">
-                            @friend
+                                @friend.Key
+                            </div>
+                            <div class="col">
+                                @friend.Value
                             </div>
                             <div class="col-auto">
                                 <button class="btn btn-primary btn-sm">Invite</button>

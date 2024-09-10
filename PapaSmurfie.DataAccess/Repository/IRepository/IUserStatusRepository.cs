@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace PapaSmurfie.DataAccess.Repository.IRepository
 {
-    public interface IFriendsRepository : IRepositoryGeneric<FriendsListModel>
+    public interface IUserStatusRepository : IRepositoryGeneric<UserStatusModel> 
     {
-        public Task<IEnumerable<string>> GetThisUserFriendsIds(string userId);
+        
     }
 }
