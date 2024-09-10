@@ -29,6 +29,10 @@
                                asp-route-userName="@User.Identity.Name">Library</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Social" asp-action="Index"
+                               asp-route-userName="@User.Identity.Name">Social</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @if (User.IsInRole(SD.Role_Admin))
@@ -69,24 +73,28 @@
             &copy; 2024 - PapaSmurfie - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-
-    <button class="open-button" onclick="openForm()">Chat</button>
+    @* All Chat: *@
+    <button class="open-button" onclick="openForm()">All Chat</button>
 
     <div class="chat-popup" id="chatpopup">
         <form class="form-container">
-            <h1>Chat</h1>
+            <h1>All Chat</h1>
+            
 
-            <label for="messageInput"><b>Message</b></label>
-            <textarea placeholder="Type message.." id="messageInput" required></textarea>
+            <label for="userInput" hidden><b>Username</b></label>
+            <input type="text" id="userInput" hidden/>
 
-            <label for="userInput"><b>Username</b></label>
-            <input type="text" id="userInput" />
+            
 
             <div class="row p-1">
-                <div >
+                <div class="scrollable-container" >
                     <ul id="messagesList"></ul>
+                    <p id="noMessagesText" class="no-messages" style="display: none;">No messages</p>
                 </div>
             </div>
+
+            <label for="messageInput" class="pb-3"><b>Message</b></label>
+            <input type="text" placeholder="Type message.." id="messageInput" required></input>
 
             @if(Context.User.Identity.IsAuthenticated)
             {
@@ -94,7 +102,7 @@
             }
             else
             {
-                <p>Please <a asp-area="Identity" asp-controller="Account" asp-action="Login">log in</a> to send a message.</p>
+                <p>Please <a asp-area="Identity" asp-controller="Account" asp-action="Login">log in</a> to use chat.</p>
                 <input type="button" id="sendButton" value="Send Message" disabled="disabled" />
             }
             

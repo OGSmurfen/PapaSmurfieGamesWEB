@@ -112,3 +112,20 @@ body {
     .form-container .btn:hover, .open-button:hover {
         opacity: 1;
     }
+
+
+
+    /* Container with a fixed height and scrollable */
+    .scrollable-container {
+        height: 300px; /* Set your desired height */
+        overflow-y: auto; /* Enable vertical scrolling */
+        border: 1px solid #ddd; /* Optional border for better visibility */
+        padding: 5px; /* Optional padding */
+    }
+
+    /* No messages text styling */
+    .no-messages {
+        text-align: center;
+        color: #888;
+        font-style: italic;
+    }

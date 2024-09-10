@@ -1,0 +1,111 @@
+﻿@model FriendRequestsVM
+
+@if (TempData["StatusMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["StatusMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <text>Login to view friends</text>
+}
+else{
+    <div class="row">
+        <div class="col-4">
+            <div class="row">
+                <h3>Add Friend:</h3>
+            </div>
+            <br>
+            <div class="row">
+                <form class="d-flex" role="search" method="post" asp-area="Customer" asp-controller="Social" asp-action="AddFriend">
+                    <input class="form-control me-2" type="search" placeholder="Friend Username" name="username" aria-label="AddFriend">
+                    <button class="btn btn-outline-success" type="submit">Add</button>
+                </form>
+            </div>
+            <div class="row">
+                <h3>Outgoing Requests:</h3>
+            </div>
+            <div class="row p-2">
+                    <div class="scrollable-container" >
+                        @foreach(var outgoing in Model.OutgoingPending)
+                        {
+                        <form method="post" asp-area="@SD.Role_Customer" asp-controller="Social" asp-action="RemoveFriend"
+                              asp-route-friendUsername="@outgoing" asp-route-friendshipType="@SD.FriendshipType_Outgoing">
+                            <div class="row mb-2">
+                                <div class="col">
+                                @outgoing
+                                </div>
+                                <div class="col-auto">
+                                    <i>Pending</i>
+                                    <button class="btn btn-danger btn-sm">Remove</button>
+                                </div>
+                            </div>
+                            <hr />
+                        </form>
+                        }
+                    </div>
+            </div>
+            <div class="row">
+                <h3>Incoming Requests:</h3>
+            </div>
+            <div class="row p-2">
+                    <div class="scrollable-container" >
+                        @foreach (var incoming in Model.IncomingPending)
+                        {
+                        <div class="row mb-2">
+                            <div class="col">
+                                @incoming
+                            </div>
+                            <div class="col-auto">
+                                <form method="post" asp-area="@SD.Role_Customer" asp-controller="Social" asp-action="AcceptFriend"
+                                      asp-route-friendUsername="@incoming">
+                                <button class="btn btn-primary btn-sm">Accept</button>
+                                </form>
+                                <form method="post" asp-area="@SD.Role_Customer" asp-controller="Social" asp-action="RemoveFriend"
+                                      asp-route-friendUsername="@incoming" asp-route-friendshipType="@SD.FriendshipType_Incoming">
+                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr />
+                        }
+                    </div>
+            </div>
+
+        </div>
+
+    <div class="col-1 vr"></div>
+
+    <div class="col">
+        <div class="row">
+            <h3>My Friends:</h3>
+        </div>
+        <div class="row p-2">
+                <div class="scrollable-container" >
+                    
+                    @foreach (var friend in Model.Accepted)
+                    {
+                        <div class="row mb-2">
+                            <div class="col">
+                            @friend
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary btn-sm">Message</button>
+                                <form method="post" asp-area="@SD.Role_Customer" asp-controller="Social" asp-action="RemoveFriend"
+                                      asp-route-friendUsername="@friend" asp-route-friendshipType="@SD.FriendStatus_Accepted">
+                                <button class="btn btn-danger btn-sm">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                    
+                </div>
+        </div>
+    </div>
+
+    </div>
+}

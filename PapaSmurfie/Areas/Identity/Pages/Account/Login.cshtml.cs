@@ -122,7 +122,15 @@ namespace PapaSmurfie.Areas.Identity.Pages.Account
                 else
                 {
                     var user = await _signInManager.UserManager.FindByEmailAsync(Input.EmailOrUsername);
+                    if(user == null)
+                    {
+                        // We did not find user by email, meaning this is an incorrect email or is not an email
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return Page();
+                    }
+                    
                     var resultFromEmail = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                    
                     if (resultFromEmail.Succeeded)
                     {
                         _logger.LogInformation("User logged in.");

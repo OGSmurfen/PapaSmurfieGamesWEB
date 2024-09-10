@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using PapaSmurfie.Models;
 using Microsoft.AspNetCore.Identity;
+using PapaSmurfie.Models.Models;
 
 
 namespace PapaSmurfie.Database
@@ -11,6 +12,7 @@ namespace PapaSmurfie.Database
         public DbSet<GameModel> Games { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<OwnedGameModel> OwnedGames { get; set; }
+        public DbSet<FriendsList> FriendsList { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
