@@ -93,7 +93,7 @@ else{
                             @friend
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-primary btn-sm">Message</button>
+                                <button class="btn btn-primary btn-sm">Invite</button>
                                 <form method="post" asp-area="@SD.Role_Customer" asp-controller="Social" asp-action="RemoveFriend"
                                       asp-route-friendUsername="@friend" asp-route-friendshipType="@SD.FriendStatus_Accepted">
                                 <button class="btn btn-danger btn-sm">Remove</button>
@@ -108,4 +108,8 @@ else{
     </div>
 
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/social.js"></script>
 }

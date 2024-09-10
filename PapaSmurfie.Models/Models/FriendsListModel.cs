@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PapaSmurfie.Models.Models
 {
-    public class FriendsList
+    public class FriendsListModel
     {
         [Key]
         public int FriendshipRecordId { get; set; }

@@ -1,25 +1,29 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using PapaSmurfie.Models.Models;
 using PapaSmurfie.Models.Models.ViewModels;
 using PapaSmurfie.Repository;
 using PapaSmurfie.Utility;
+using PapaSmurfie.Web.Hubs;
 
 namespace PapaSmurfie.Web.Areas.Customer.Controllers
 {
     [Area("Customer")]
     public class SocialController : Controller
     {
-
+        private readonly IHubContext<SocialHub> _socialHubContext;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         public SocialController(
+            IHubContext<SocialHub> socialHubContext,
             ILogger<HomeController> logger,
             IUnitOfWork unitOfWork,
             SignInManager<IdentityUser> signInManager
             )
         {
+            _socialHubContext = socialHubContext;
             _signInManager = signInManager;
             _logger = logger;
             this._unitOfWork = unitOfWork;
@@ -103,7 +107,7 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            await _unitOfWork.FriendsRepository.CreateAsync(new FriendsList
+            await _unitOfWork.FriendsRepository.CreateAsync(new FriendsListModel
             {
                 FriendshipSenderId = _signInManager.UserManager.GetUserId(User),
                 FriendshipReceiverId = friendToAdd.Id
@@ -112,6 +116,7 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
 
             await _unitOfWork.Save();
 
+            await NotifyUsers(_signInManager.UserManager.GetUserId(User), friendToAdd.Id);
             TempData["StatusMessage"] = ("Friend Request Sent");
             return RedirectToAction(nameof(Index));
         }
@@ -131,6 +136,7 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
 
                 await _unitOfWork.Save();
 
+                await NotifyUsers(myUserId, friendId);
                 TempData["StatusMessage"] = ("Friend request removed!");
                 return RedirectToAction(nameof(Index));
             }
@@ -144,6 +150,7 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
 
                 await _unitOfWork.Save();
 
+                await NotifyUsers(myUserId, friendId);
                 TempData["StatusMessage"] = ("Friend request removed!");
                 return RedirectToAction(nameof(Index));
             }
@@ -158,6 +165,7 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
 
                 await _unitOfWork.Save();
 
+                await NotifyUsers(myUserId, friendId);
                 TempData["StatusMessage"] = ("Friend removed!");
                 return RedirectToAction(nameof(Index));
             }
@@ -182,8 +190,18 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
 
             await _unitOfWork.Save();
 
+            // Makes changes immediate, no need to refresh page manually
+            await NotifyUsers(myUserId, friendId);
+
             TempData["StatusMessage"] = ("Friend accepted!");
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task NotifyUsers(string myUserId, string  friendId)
+        {
+            await _socialHubContext.Clients.User(myUserId).SendAsync("ReceiveFriendRequestUpdate");
+            await _socialHubContext.Clients.User(friendId).SendAsync("ReceiveFriendRequestUpdate");
+            
         }
 
     }

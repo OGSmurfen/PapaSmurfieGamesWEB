@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PapaSmurfie.DataAccess.Repository.RepositoryImpl
 {
-    public class FriendsRepository : RepositoryGeneric<FriendsList>, IFriendsRepository
+    public class FriendsRepository : RepositoryGeneric<FriendsListModel>, IFriendsRepository
     {
         public FriendsRepository(ApplicationDbContext dbContext) : base(dbContext)
         {

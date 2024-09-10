@@ -13,5 +13,9 @@
         // Friendship type:
         public const string FriendshipType_Outgoing = "outgoing";
         public const string FriendshipType_Incoming = "incoming";
+
+        // On/Offline Status:
+        public const string OnOffStatus_Online = "Online";
+        public const string OnOffStatus_Offline = "Offline";
     }
 }

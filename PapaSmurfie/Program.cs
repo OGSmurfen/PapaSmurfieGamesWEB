@@ -78,7 +78,9 @@ app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+
 app.MapHub<ChatHub>("/chatHub");
+app.MapHub<SocialHub>("/socialHub");
 
 app.UseStaticFiles();
 app.Run();

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PapaSmurfie.DataAccess.Repository.IRepository
 {
-    public interface IFriendsRepository : IRepositoryGeneric<FriendsList>
+    public interface IFriendsRepository : IRepositoryGeneric<FriendsListModel>
     {
 
     }
