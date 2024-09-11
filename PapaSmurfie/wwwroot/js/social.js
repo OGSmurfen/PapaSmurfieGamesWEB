@@ -1,36 +1,36 @@
 ﻿"use strict";
 
-console.log("Social: Is Authenticated:", isAuthenticated);
+console.log("social: Is Authenticated:", isAuthenticated);
 
 if (isAuthenticated) {
-    $(document).ready(
+
+    const connection = new signalR.HubConnectionBuilder().withUrl("/socialGroupsHub").build();
+
+    connection.start().then(
         function () {
-            const connection = new signalR.HubConnectionBuilder().withUrl("/socialHub").build();
+            console.log("social: SocialGroupsHub connection established");
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
 
-            connection.start().then(
-                function () {
-                    console.log("SocialHub established");
-                }).catch(function (err) {
-                    return console.error(err.toString());
-                });
+   
+    // SignalR event handler for group messages
+    connection.on("ReceiveGroupMessage", function (message) {
+        console.log("Group message received: " + message);
+    });
 
-            /*This signal is sent directly from SocialController and is not a method of the SocialHub*/
-            connection.on("ReceiveFriendRequestUpdate", function () {
-                location.reload();
-            });
-            connection.on("ReceiveFriendStatusUpdate", function () {
-                updateFriendStatuses();
-            });
+    window.createAndJoinGroup = function() {
+        connection.invoke("CreateAndJoinGroup").catch(function (err) {
+            return console.error("Error creating/joining group:", err.toString());
+        });
+    }
+    
 
 
-        }
+   
+    
 
-    );
 } else {
     console.log("User is not authenticated, SocialHub connection will not be started.");
 }
 
-function updateFriendStatuses() {
-    // Implement logic to update friend statuses on the page
-    // This could involve making an AJAX call to get the latest statuses and updating the UI
-}

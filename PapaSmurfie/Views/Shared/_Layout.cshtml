@@ -8,7 +8,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="icon" type="image/png" href="~/images/smurf_favicon.png" />
-
+    <script>
+        var isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
+    </script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/social.js"></script> @* Include social.js in head so it loads before socialPage.js located in Customer/.../Social/Index.cshtml *@
 </head>
 <body>
     <header>
@@ -74,9 +78,15 @@
         </div>
     </footer>
     @* All Chat: *@
-    <button class="open-button" onclick="openForm()">All Chat</button>
+    <button class="open-button" onclick="openForm()">Chats</button>
 
     <div class="chat-popup" id="chatpopup">
+
+        <div class="tab">
+            <button class="tablinks" onclick="openChatTab(event, 'allChat')" id="defaultTab">All Chat</button>
+            <button class="tablinks" onclick="openChatTab(event, 'groupChat')">Group Chat</button>
+        </div>
+        <div id="allChat" class="tabcontent">
         <form class="form-container">
             <h1>All Chat</h1>
             
@@ -108,9 +118,42 @@
             
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
         </form>
+        </div>
+
+        <div id="groupChat" class="tabcontent">
+            <form class="form-container">
+                <h1>Group Chat</h1>
+
+                <div class="row p-1">
+                    <div class="scrollable-container">
+                        <ul id="groupMessagesList"></ul>
+                        <p id="noGroupMessagesText" class="no-messages" style="display: none;">No messages</p>
+                    </div>
+                </div>
+
+                <label for="groupMessageInput" class="pb-3"><b>Message</b></label>
+                <input type="text" placeholder="Type message.." id="groupMessageInput" required></input>
+
+
+                @if (Context.User.Identity.IsAuthenticated)
+                {
+                    <input type="button" id="sendGroupButton" value="Send Message" />
+                }
+                else
+                {
+                    <p>Please <a asp-area="Identity" asp-controller="Account" asp-action="Login">log in</a> to use chat.</p>
+                    <input type="button" id="sendGroupButton" value="Send Message" disabled="disabled" />
+                }
+                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+        </div>
+
+
+
     </div>
 
     <script>
+        // Open-Close chat window
         function openForm() {
             document.getElementById("chatpopup").style.display = "block";
         }
@@ -118,11 +161,36 @@
         function closeForm() {
             document.getElementById("chatpopup").style.display = "none";
         }
+
+        // Switch tabs
+        function openChatTab(evt, chatName) {
+            var i, tabcontent, tablinks;
+
+            // Hide all chat contents
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Remove the 'active' class from all tabs
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+
+            // Show the current chat content and add 'active' class to the clicked tab
+            document.getElementById(chatName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Set the default tab to be opened when the chat popup is first shown
+        document.getElementById("defaultTab").click();
+
     </script>
     <script>
         var isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
     </script>
-    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    
     <script src="~/js/chat.js"></script>
     
 
@@ -132,6 +200,7 @@
     @await RenderSectionAsync("Scripts", required: false)
 
 
+    <script src="~/js/status.js"></script>
     <script src="~/js/social.js"></script>
 </body>
 </html>

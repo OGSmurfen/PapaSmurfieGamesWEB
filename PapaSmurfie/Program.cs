@@ -81,7 +81,9 @@ app.MapControllerRoute(
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapHub<ChatHub>("/chatHub");
-app.MapHub<SocialHub>("/socialHub");
+app.MapHub<StatusHub>("/statusHub");
+app.MapHub<SocialGroupsHub>("/socialGroupsHub");
+app.MapHub<SocialPageUpdatesHub>("/socialPageUpdatesHub");
 
 app.UseStaticFiles();
 app.Run();

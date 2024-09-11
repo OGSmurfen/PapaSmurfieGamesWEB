@@ -12,18 +12,18 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
     [Area("Customer")]
     public class SocialController : Controller
     {
-        private readonly IHubContext<SocialHub> _socialHubContext;
+        private readonly IHubContext<SocialPageUpdatesHub> _socialPageUpdatesHubContext; // TODO: fix friend reques notifications, are not in statushub anymore
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         public SocialController(
-            IHubContext<SocialHub> socialHubContext,
+            IHubContext<SocialPageUpdatesHub> socialPageUpdatesHubContext,
             ILogger<HomeController> logger,
             IUnitOfWork unitOfWork,
             SignInManager<IdentityUser> signInManager
             )
         {
-            _socialHubContext = socialHubContext;
+            _socialPageUpdatesHubContext = socialPageUpdatesHubContext;
             _signInManager = signInManager;
             _logger = logger;
             this._unitOfWork = unitOfWork;
@@ -144,11 +144,15 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
         [HttpPost]
         public async Task<IActionResult> RemoveFriend(string friendUsername, string friendshipType)
         {
             var myUserId = _signInManager.UserManager.GetUserId(User);
-            var friendId = _signInManager.UserManager.FindByNameAsync(friendUsername).GetAwaiter().GetResult().Id;
+            var friend = await _signInManager.UserManager.FindByNameAsync(friendUsername);//?
+            string friendId = friend.Id;
 
             if (friendshipType == SD.FriendshipType_Outgoing)
             {
@@ -222,8 +226,8 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
 
         private async Task NotifyUsers(string myUserId, string  friendId)
         {
-            await _socialHubContext.Clients.User(myUserId).SendAsync("ReceiveFriendRequestUpdate");
-            await _socialHubContext.Clients.User(friendId).SendAsync("ReceiveFriendRequestUpdate");
+            await _socialPageUpdatesHubContext.Clients.User(myUserId).SendAsync("ReceiveFriendRequestUpdate");
+            await _socialPageUpdatesHubContext.Clients.User(friendId).SendAsync("ReceiveFriendRequestUpdate");
             
         }
 

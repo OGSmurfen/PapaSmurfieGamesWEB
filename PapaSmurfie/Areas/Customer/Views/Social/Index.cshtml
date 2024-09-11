@@ -98,7 +98,7 @@ else{
                             <div class="col-auto">
                                 <button class="btn btn-primary btn-sm">Invite</button>
                                 <form method="post" asp-area="@SD.Role_Customer" asp-controller="Social" asp-action="RemoveFriend"
-                                      asp-route-friendUsername="@friend" asp-route-friendshipType="@SD.FriendStatus_Accepted">
+                                      asp-route-friendUsername="@friend.Key" asp-route-friendshipType="@SD.FriendStatus_Accepted">
                                 <button class="btn btn-danger btn-sm">Remove</button>
                                 </form>
                             </div>
@@ -108,11 +108,22 @@ else{
                     
                 </div>
         </div>
+        <div class="row p-2">
+            <h3>Lobby:</h3>
+            <div class="scrollable-container">
+                <button class="btn btn-primary btn-sm" id="createLobbyBtn">Create Lobby</button>
+
+
+            </div>
+        </div>
     </div>
 
     </div>
 
+    <script>
+        var isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
-    <script src="~/js/social.js"></script>
+    <script src="~/js/socialPage.js"></script>
 }
