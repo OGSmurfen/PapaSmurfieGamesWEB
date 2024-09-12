@@ -15,19 +15,14 @@ if (isAuthenticated) {
     });
 
 
-
-
-
-    document.getElementById("createLobbyBtn").addEventListener("click", function (event) {
-        event.preventDefault();
-
-        createAndJoinGroup()
+    document.getElementById("createLobbyWindowBtn").addEventListener("click", () => {
+        window.open("/Customer/Social/LobbyWindow", "LobbyWindow", "width=900,height=600,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=no");
     });
 
-   
+    
 
-
-
-
+} else {
+    console.log("User is not authenticated: socialPage.js");
 }
+
 

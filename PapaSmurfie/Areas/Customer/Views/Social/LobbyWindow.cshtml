@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PapaSmurfie</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="icon" type="image/png" href="~/images/smurf_favicon.png" />
+    
+</head>
+
+<body class="container mt-2">
+
+    <h4>Lobby Controller</h4>
+
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <p class="text-danger">Something went wrong: Not Authenticated! Try again!</p>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <p><strong>Lobby Number:</strong></p>
+                    <p>Currently not in a lobby</p>
+                </div>
+
+                <div class="mb-3">
+                    <p><strong>Join Lobby:</strong></p>
+                    <form class="d-flex" role="search" method="post" asp-area="Customer" asp-controller="Lobby" asp-action="JoinLobby">
+                        <input class="form-control me-2" type="search" placeholder="Lobby#123number" name="lobbyNumber" aria-label="LobbyNumber">
+                        <button class="btn btn-outline-success" type="submit">Join</button>
+                    </form>
+                </div>
+
+                <div class="mb-4">
+                    <p><strong>OR Create a new Lobby:</strong></p>
+                    <button class="btn btn-primary btn-sm" id="createLobbyBtn">Create Lobby</button>
+                </div>
+            </div>
+
+            <div class="col-md-1 vr"></div>
+
+            <div class="col-md-5">
+                <form class="form-container">
+                    <h5 class="mb-3">Lobby Chat</h5>
+
+                    <div class="row p-1 mb-1">
+                        <div class="scrollable-container">
+                            <ul id="lobbyMessagesList"></ul>
+                            <p id="noLobbyMessagesText" class="no-messages" style="display: none;">No messages</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-1">
+                        <label for="lobbyMessageInput" class="form-label"><strong>Message</strong></label>
+                        <input type="text" placeholder="Type message..." id="lobbyMessageInput" class="form-control" required />
+                    </div>
+
+                    <input type="button" id="sendLobbyMessageButton" class="btn btn-primary custom-button" value="Send Message" />
+                </form>
+                <div class="mt-1">
+                    <input type="button" id="joinLobbyAudioCallButton" class="btn btn-success custom-button" value="Join Lobby Call" />
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>
+
+<script>
+    var isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
+</script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/lobby.js"></script> 

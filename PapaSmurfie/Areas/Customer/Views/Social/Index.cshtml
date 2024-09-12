@@ -96,7 +96,6 @@ else{
                                 @friend.Value
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-primary btn-sm">Invite</button>
                                 <form method="post" asp-area="@SD.Role_Customer" asp-controller="Social" asp-action="RemoveFriend"
                                       asp-route-friendUsername="@friend.Key" asp-route-friendshipType="@SD.FriendStatus_Accepted">
                                 <button class="btn btn-danger btn-sm">Remove</button>
@@ -111,7 +110,8 @@ else{
         <div class="row p-2">
             <h3>Lobby:</h3>
             <div class="scrollable-container">
-                <button class="btn btn-primary btn-sm" id="createLobbyBtn">Create Lobby</button>
+
+                <button class="btn btn-primary btn-sm" id="createLobbyWindowBtn">Lobby Window</button>
 
 
             </div>

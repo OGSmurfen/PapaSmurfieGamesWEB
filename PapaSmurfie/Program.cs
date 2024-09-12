@@ -37,6 +37,8 @@ builder.Services.ConfigureApplicationCookie(options =>
         options.LoginPath = "/Identity/Account/Login";
         options.LogoutPath = "/Identity/Account/Logout";
         options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.HttpOnly = true;
     }
 );
 // need the following configuraion so app can serve .data file of the game builds
@@ -54,6 +56,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IFriendsRepository, FriendsRepository>();
 builder.Services.AddScoped<IUserStatusRepository, UserStatusRepository>(); 
+builder.Services.AddScoped<ILobbyRepository, LobbyRepository>();
 
 builder.Services.AddSignalR();
 
@@ -82,7 +85,7 @@ app.MapControllerRoute(
 
 app.MapHub<ChatHub>("/chatHub");
 app.MapHub<StatusHub>("/statusHub");
-app.MapHub<SocialGroupsHub>("/socialGroupsHub");
+app.MapHub<LobbyHub>("/socialGroupsHub");
 app.MapHub<SocialPageUpdatesHub>("/socialPageUpdatesHub");
 
 app.UseStaticFiles();

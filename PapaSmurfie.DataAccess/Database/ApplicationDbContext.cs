@@ -14,6 +14,7 @@ namespace PapaSmurfie.Database
         public DbSet<OwnedGameModel> OwnedGames { get; set; }
         public DbSet<FriendsListModel> FriendsList { get; set; }
         public DbSet<UserStatusModel> UserStatus { get; set; }
+        public DbSet<LobbyModel> Lobbies { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

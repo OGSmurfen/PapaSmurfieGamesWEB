@@ -64,24 +64,6 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
             }
 
 
-            //List<string> acceptedFriendsUsernames = new List<string>();
-            //foreach (var friends in acceptedFriends)
-            //{
-            //    // No matter if sent or received, we want the other user's Id
-            //    string usernameToAdd;
-            //    var senderUsername = _signInManager.UserManager.Users.FirstOrDefault(
-            //                        u => u.Id == friends.FriendshipSenderId).UserName;
-            //    usernameToAdd = senderUsername;
-            //    if(senderUsername == User.Identity.Name)
-            //    {
-            //        var receiverUsername = _signInManager.UserManager.Users.FirstOrDefault(
-            //                        u => u.Id == friends.FriendshipReceiverId).UserName;
-            //        usernameToAdd = receiverUsername;
-            //    }
-            //    acceptedFriendsUsernames.Add(usernameToAdd);
-            //}
-
-
             var thisUserAcceptedFriendsIds = await _unitOfWork.FriendsRepository.GetThisUserFriendsIds(myUserId);
             var usernameStatusDict = new Dictionary<string, string>();
             foreach (var friendId in thisUserAcceptedFriendsIds)
@@ -231,5 +213,10 @@ namespace PapaSmurfie.Web.Areas.Customer.Controllers
             
         }
 
+
+        public IActionResult LobbyWindow()
+        {
+            return View();
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-console.log("social: Is Authenticated:", isAuthenticated);
+console.log("lobby.js: Is Authenticated:", isAuthenticated);
 
 if (isAuthenticated) {
 
@@ -19,18 +19,28 @@ if (isAuthenticated) {
         console.log("Group message received: " + message);
     });
 
-    window.createAndJoinGroup = function() {
-        connection.invoke("CreateAndJoinGroup").catch(function (err) {
-            return console.error("Error creating/joining group:", err.toString());
+    
+    
+
+    document.getElementById("createLobbyBtn").addEventListener("click", function (event) {
+        event.preventDefault();
+
+        createAndJoinLobby()
+    });
+   
+
+
+
+
+
+
+    function createAndJoinLobby() {
+        connection.invoke("CreateAndJoinLobby").catch(function (err) {
+            return console.error("Error creating/joining lobby:", err.toString());
         });
     }
-    
-
-
-   
-    
 
 } else {
-    console.log("User is not authenticated, SocialHub connection will not be started.");
+    console.log("User is not authenticated, Lobby connection will not be started.");
 }
 
