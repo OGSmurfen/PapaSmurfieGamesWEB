@@ -27,14 +27,14 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <p><strong>Lobby Number:</strong></p>
-                    <p>Currently not in a lobby</p>
+                    <p id="lobbyParagraph">Currently not in a lobby</p>
                 </div>
 
                 <div class="mb-3">
                     <p><strong>Join Lobby:</strong></p>
                     <form class="d-flex" role="search" method="post" asp-area="Customer" asp-controller="Lobby" asp-action="JoinLobby">
-                        <input class="form-control me-2" type="search" placeholder="Lobby#123number" name="lobbyNumber" aria-label="LobbyNumber">
-                        <button class="btn btn-outline-success" type="submit">Join</button>
+                        <input class="form-control me-2" id="lobbyNumberText" @* type="search" *@ type="text" placeholder="Lobby#123number" name="lobbyNumber" aria-label="LobbyNumber">
+                        <button class="btn btn-outline-success" type="submit" id="joinLobbyBtn">Join</button>
                     </form>
                 </div>
 

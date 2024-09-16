@@ -12,5 +12,11 @@ namespace PapaSmurfie.DataAccess.Repository.IRepository
     {
         public Task<bool> IsUserInLobbyAsync(string userId);
         public Task CreateLobbyUserRecordAsync(string lobbyId, string userId);
+        /// <summary>
+        /// Removes UserId-LobbyId record from Db and returns the LobbyId needed for actual disconnection in SignalR
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>string LobbyId</returns>
+        public Task<string> RemoveUserLobbyRecord(string userId);
     }
 }
