@@ -48,20 +48,24 @@ namespace PapaSmurfie.Web.Hubs
         }
         public async Task JoinLobby(string lobbyId)
         {
+            Console.WriteLine("JoinLobby Entered");
+
             string myUsername = _signInManager.UserManager.GetUserName(Context.User);
             string userId = _signInManager.UserManager.GetUserId(Context.User);
 
             
 
-            if (lobbyId == null)
+            if (string.IsNullOrEmpty(lobbyId))
             {
                 Console.WriteLine("Nothing to join, lobbyId empty!");
                 return;
             }
 
-            await Groups.AddToGroupAsync(userId, lobbyId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, lobbyId);
 
             await Clients.Group(lobbyId).SendAsync("GroupChat", $"{myUsername} has joined the group {lobbyId}.");
+
+            await _unitOfWork.LobbyRepository.CreateLobbyUserRecordAsync(lobbyId, userId);
 
             // For displaying lobby id
             await Clients.Group(lobbyId).SendAsync("Joined", lobbyId);
@@ -107,8 +111,15 @@ namespace PapaSmurfie.Web.Hubs
 
         public async Task SendMessageToGroup(string message)
         {
-            string myUsername = _signInManager.UserManager.GetUserName(Context.User);
             string userId = _signInManager.UserManager.GetUserId(Context.User);
+            var isUserInLobby = await _unitOfWork.LobbyRepository.IsUserInLobbyAsync(userId);
+            if(!isUserInLobby)
+            {
+                return;
+            }
+
+            string myUsername = _signInManager.UserManager.GetUserName(Context.User);
+            
             LobbyModel lobbyRecord = await _unitOfWork.LobbyRepository.GetAsync(l => l.UserId == userId);
 
             string groupName = lobbyRecord.LobbyId;

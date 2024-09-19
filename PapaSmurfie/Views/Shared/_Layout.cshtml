@@ -77,13 +77,13 @@
         </div>
     </footer>
     @* All Chat: *@
-    <button class="open-button" onclick="openForm()">Chats</button>
+    <button class="open-button" onclick="openForm()">Chat</button>
 
     <div class="chat-popup" id="chatpopup">
 
         <div class="tab">
             <button class="tablinks" onclick="openChatTab(event, 'allChat')" id="defaultTab">All Chat</button>
-            <button class="tablinks" onclick="openChatTab(event, 'groupChat')">Group Chat</button>
+            @* <button class="tablinks" onclick="openChatTab(event, 'groupChat')">Group Chat</button> *@
         </div>
         <div id="allChat" class="tabcontent">
         <form class="form-container">
@@ -118,7 +118,7 @@
             <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
         </form>
         </div>
-
+@* 
         <div id="groupChat" class="tabcontent">
             <form class="form-container">
                 <h1>Group Chat</h1>
@@ -146,7 +146,7 @@
                 <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
             </form>
         </div>
-
+ *@
 
 
     </div>

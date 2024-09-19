@@ -22,13 +22,29 @@ if (isAuthenticated) {
         return console.error(err.toString());
     });
 
-    document.getElementById("sendButton").addEventListener("click", function (event) {
-        var user = document.getElementById("userInput").value;
-        var message = document.getElementById("messageInput").value;
+    var userInput = document.getElementById("userInput");
+    var messageInput = document.getElementById("messageInput");
+    function sendMessage() {
+        var user = userInput.value;
+        var message = messageInput.value;
         connection.invoke("SendMessage", user, message).catch(function (err) {
             return console.error(err.toString());
+        }).then(function () {
+            messageInput.value = "";
+        }).catch(function (err) {
+            console.error(err.toString());
         });
+    }
+    messageInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+
+    document.getElementById("sendButton").addEventListener("click", function (event) {
         event.preventDefault();
+        sendMessage();
     });
 } else {
     console.log("User is not authenticated, ChatHub connection will not be started.");

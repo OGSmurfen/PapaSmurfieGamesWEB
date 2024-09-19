@@ -43,7 +43,7 @@ if (isAuthenticated) {
         // Find the <p> element and update its text
         var lobbyParagraph = document.getElementById("lobbyParagraph");
         if (lobbyParagraph) {
-            lobbyParagraph.innerText = `Currently not in a lobby`;
+            //lobbyParagraph.innerText = `Currently not in a lobby`;
         } else {
             console.error("lobbyParagraph element not found.");
         }
@@ -60,18 +60,36 @@ if (isAuthenticated) {
 
     // Send Group(lobby) Messages Logic
     var sendLobbyMessageButton = document.getElementById("sendLobbyMessageButton");
-    if (sendLobbyMessageButton) {
-        sendLobbyMessageButton.addEventListener("click", function (event) {
-            console.log("send button clicked");
-            var message = document.getElementById("lobbyMessageInput").value;
+    var lobbyMessageInput = document.getElementById("lobbyMessageInput");
+
+    function sendMessage() {
+        var message = lobbyMessageInput.value;
+        if (message) {
             connection.invoke("SendMessageToGroup", message).catch(function (err) {
                 return console.error(err.toString());
+            }).then(function () {
+                lobbyMessageInput.value = "";
+            }).catch(function (err) {
+                console.error(err.toString());
             });
-            event.preventDefault();
-        });
-    }else{
-        console.log("SendLobbyMsgBtn not found");
+
+        }
     }
+    lobbyMessageInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+
+    if (sendLobbyMessageButton) {
+        sendLobbyMessageButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            sendMessage();
+        });
+    }
+
+    
 
     // Join lobby logic
     var joinLobbyBtn = document.getElementById("joinLobbyBtn");
@@ -80,9 +98,9 @@ if (isAuthenticated) {
         if (lobbyNumberText) {
 
             joinLobbyBtn.addEventListener("click", function (event) {
-                var lobbyNumber = lobbyNumberText.value;
+                var lobbyId = lobbyNumberText.value;
 
-                connection.invoke("JoinLobby", lobbyNumber).catch(function (err) {
+                connection.invoke("JoinLobby", lobbyId).catch(function (err) {
                     return console.error(err.toString());
                 });
                 event.preventDefault();
@@ -99,11 +117,6 @@ if (isAuthenticated) {
     window.addEventListener("unload", function (event) {
         leaveLobby();
     });
-
-
-
-
-
 
 
     function leaveLobby() {
